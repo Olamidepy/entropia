@@ -1,4 +1,4 @@
-# ENTROPIA — AI Survival Intelligence Platform
+# ENTROPIA - AI Survival Intelligence Platform
 
 > **"An AI Agent that Decides What to Remember to Survive."**
 
@@ -8,7 +8,7 @@ By marrying a **strict deterministic mathematical scoring engine** with an **aut
 
 ---
 
-## 🏛️ Core Architectural Principle: Deterministic Math vs. AI Reasoning
+##  Core Architectural Principle: Deterministic Math vs. AI Reasoning
 
 A foundational principle of Entropia is the strict separation between mathematical calculation and language model reasoning:
 
@@ -59,7 +59,7 @@ A foundational principle of Entropia is the strict separation between mathematic
 
 ---
 
-## 🛠️ Technology Stack
+##  Technology Stack
 
 | Layer | Technology |
 | :--- | :--- |
@@ -73,7 +73,7 @@ A foundational principle of Entropia is the strict separation between mathematic
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 ```
 entropia/
@@ -133,7 +133,7 @@ entropia/
 
 ---
 
-## ⚡ Quickstart & Local Setup
+##  Quickstart & Local Setup
 
 The project is pre-configured to run with **zero external dependencies** out of the box.
 
@@ -168,7 +168,7 @@ Open **[http://localhost:3000](http://localhost:3000)** in your browser:
 
 ---
 
-## 🧪 Running Automated Tests
+##  Running Automated Tests
 
 Entropia ships with a comprehensive Vitest test suite validating all deterministic math, risk rules, and confirmation policies:
 
@@ -180,7 +180,7 @@ npx vitest run
 
 ---
 
-## 📊 Deterministic Survival Formula
+##  Deterministic Survival Formula
 
 The survival score is deterministically calculated and strictly bounded `[0, 100]`:
 
@@ -197,7 +197,7 @@ $$\text{SurvivalScore} = \sum (\text{CategoryScore}_i \times \text{Weight}_i)$$
 
 ---
 
-## 🛡️ User Confirmation & Safety Dialog
+##  User Confirmation & Safety Dialog
 
 Sensitive actions (such as `PRESERVE_TO_FILECOIN`, `RENEW_STORAGE_DEAL`, or `COMPRESS_MEMORY_INDEX`) require explicit operator confirmation before execution.
 
@@ -233,7 +233,7 @@ Implementations include:
 
 ---
 
-## 🚀 Future Roadmap
+##  Future Roadmap
 
 - [ ] Autonomous ERC-4337 smart account funding for automated deal renewal payments.
 - [ ] Cross-chain Filecoin IPC (InterPlanetary Consensus) subnets for localized telemetry indexing.
@@ -242,5 +242,5 @@ Implementations include:
 
 ---
 
-## 📄 License
+##  License
 MIT License. Built for the autonomous agent and decentralized storage ecosystem.
