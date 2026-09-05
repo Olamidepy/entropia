@@ -6,7 +6,9 @@ export const metadata: Metadata = {
   description:
     "Autonomous survival intelligence platform monitoring digital projects, financial runways, storage deals, and risk signals with deterministic scoring and Filecoin preservation.",
   icons: {
-    icon: "/images/entropia-logo.png",
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
   },
 };
 
