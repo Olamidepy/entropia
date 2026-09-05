@@ -10,7 +10,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "db:push": "prisma db push",
-    "db:seed": "node --loader ts-node/esm prisma/seed.ts || npx tsx prisma/seed.ts",
+    "db:seed": "npx tsx prisma/seed.ts",
     "prisma:generate": "prisma generate"
   },
   "dependencies": {
