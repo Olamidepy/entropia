@@ -1,0 +1,185 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String?
+  role      String    @default("operator") // admin, operator, viewer
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  projects  Project[]
+}
+
+model Project {
+  id              String           @id @default(cuid())
+  name            String
+  slug            String           @unique
+  description     String?
+  category        String           @default("agent_vault") // agent_vault, decentralized_archive, data_pipeline
+  status          String           @default("active") // active, degraded, critical, preserved
+  currentScore    Float            @default(100.0)
+  currentStatus   String           @default("healthy") // healthy, stable, at-risk, critical
+  primaryProvider String           @default("Filecoin-Glif")
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  userId          String
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  signals         Signal[]
+  memories        Memory[]
+  riskEvents      RiskEvent[]
+  survivalScores  SurvivalScore[]
+  decisions       Decision[]
+  actions         Action[]
+  filecoinRecords FilecoinRecord[]
+  auditLogs       AuditLog[]
+
+  @@index([userId])
+}
+
+model Signal {
+  id          String   @id @default(cuid())
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  name        String   // e.g. "storage_capacity_pct", "runway_days", "retrieval_latency_ms", "heartbeat_freshness_sec"
+  category    String   // resource, storage, stability, activity, security
+  value       Float
+  unit        String   // days, pct, ms, sec, count
+  metadata    String?  // JSON string
+  observedAt  DateTime @default(now())
+
+  @@index([projectId, category])
+  @@index([projectId, observedAt])
+}
+
+model Memory {
+  id          String   @id @default(cuid())
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  type        String   // INCIDENT, DECISION, ACTION_OUTCOME, TREND_SNAPSHOT, HUMAN_OVERRIDE
+  title       String
+  content     String
+  severity    String   @default("INFO") // INFO, WARNING, CRITICAL
+  tags        String?  // comma-separated tags e.g. "storage,runway,filecoin"
+  timestamp   DateTime @default(now())
+
+  @@index([projectId, timestamp])
+}
+
+model RiskEvent {
+  id          String     @id @default(cuid())
+  projectId   String
+  project     Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  code        String     // e.g. "STORAGE_EXPIRY_CRITICAL", "RUNWAY_DEPLETION", "RETRIEVAL_FAILURE"
+  title       String
+  description String
+  severity    String     // LOW, MEDIUM, HIGH, CRITICAL
+  status      String     @default("ACTIVE") // ACTIVE, MITIGATED, DISMISSED
+  evidence    String     // JSON serialized proof/signals
+  detectedAt  DateTime   @default(now())
+  resolvedAt  DateTime?
+  decisions   Decision[]
+
+  @@index([projectId, status])
+  @@index([projectId, severity])
+}
+
+model SurvivalScore {
+  id                    String   @id @default(cuid())
+  projectId             String
+  project               Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  score                 Float    // 0.0 to 100.0
+  status                String   // healthy, stable, at-risk, critical
+  resourceHealth        Float    // 0 - 100
+  storageHealth         Float    // 0 - 100
+  historicalStability   Float    // 0 - 100
+  riskExposure          Float    // 0 - 100
+  systemActivity        Float    // 0 - 100
+  preservationReadiness Float    // 0 - 100
+  factorsJson           String   // JSON array of factor objects
+  calculatedAt          DateTime @default(now())
+
+  @@index([projectId, calculatedAt])
+}
+
+model Decision {
+  id              String      @id @default(cuid())
+  projectId       String
+  project         Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  riskEventId     String?
+  riskEvent       RiskEvent?  @relation(fields: [riskEventId], references: [id], onDelete: SetNull)
+  policyRule      String      // rule identifier e.g. "CRITICAL_RISK_SURVIVAL_BELOW_30"
+  recommendation  String      // "PRESERVE_TO_FILECOIN", "RENEW_STORAGE_DEAL", etc.
+  reasoning       String
+  executionType   String      // AUTOMATIC, REQUIRES_CONFIRMATION, RECOMMENDED_ONLY, NO_ACTION
+  status          String      @default("PROPOSED") // PROPOSED, CONFIRMED, REJECTED, EXECUTED
+  createdAt       DateTime    @default(now())
+  actions         Action[]
+  auditLogs       AuditLog[]
+
+  @@index([projectId, status])
+}
+
+model Action {
+  id                 String     @id @default(cuid())
+  projectId          String
+  project            Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  decisionId         String?
+  decision           Decision?  @relation(fields: [decisionId], references: [id], onDelete: SetNull)
+  actionType         String     // "PRESERVE_TO_FILECOIN", "RENEW_STORAGE_DEAL", "COMPRESS_MEMORY_INDEX", "MIGRATE_SECONDARY_STORAGE"
+  title              String
+  description        String
+  requiresConfirmation Boolean  @default(true)
+  status             String     @default("PENDING_CONFIRMATION") // PENDING_CONFIRMATION, APPROVED, REJECTED, EXECUTING, COMPLETED, FAILED
+  payload            String?    // JSON parameters
+  executedAt         DateTime?
+  completedAt        DateTime?
+  createdAt          DateTime   @default(now())
+  auditLogs          AuditLog[]
+
+  @@index([projectId, status])
+}
+
+model AuditLog {
+  id          String    @id @default(cuid())
+  projectId   String
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  decisionId  String?
+  decision    Decision? @relation(fields: [decisionId], references: [id], onDelete: SetNull)
+  actionId    String?
+  action      Action?   @relation(fields: [actionId], references: [id], onDelete: SetNull)
+  actor       String    // "SYSTEM", "AI_AGENT", "OPERATOR_USER"
+  eventType   String    // "DECISION_GENERATED", "CONFIRMATION_REQUESTED", "ACTION_APPROVED", "ACTION_EXECUTED", "STORAGE_PRESERVED"
+  details     String    // JSON description of before/after state
+  ipAddress   String?
+  createdAt   DateTime  @default(now())
+
+  @@index([projectId, createdAt])
+}
+
+model FilecoinRecord {
+  id            String    @id @default(cuid())
+  projectId     String
+  project       Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  dealId        String?   // e.g. "f0182941-deal-88492"
+  pieceCid      String    // bafk...
+  payloadCid    String    // bafy...
+  provider      String    // e.g. "f019283 (Glif)", "f028472 (PiKnik)"
+  sizeBytes     BigInt?
+  storageStatus String    @default("ACTIVE") // PENDING, ACTIVE, EXPIRED, FAULTED
+  replication   Int       @default(1)
+  dealStart     DateTime?
+  dealEnd       DateTime?
+  verified      Boolean   @default(true)
+  metadata      String?   // JSON
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([projectId, storageStatus])
+}
