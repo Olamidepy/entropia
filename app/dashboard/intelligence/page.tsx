@@ -26,6 +26,7 @@ export default function IntelligencePage() {
 
       // 1. Get project ID
       const pRes = await fetch(`/api/projects/${projectSlug}`);
+      if (!pRes.ok) throw new Error(`Failed to load project details (HTTP ${pRes.status})`);
       const pJson = await pRes.json();
       if (!pJson.success) throw new Error(pJson.error?.message || "Failed to load project");
 
@@ -37,6 +38,7 @@ export default function IntelligencePage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ projectId: pJson.data.project.id }),
       });
+      if (!res.ok) throw new Error(`Intelligence analysis failed (HTTP ${res.status})`);
       const json = await res.json();
       if (!json.success) throw new Error(json.error?.message || "Intelligence analysis failed");
 
@@ -61,9 +63,11 @@ export default function IntelligencePage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ projectId }),
       });
-      const json = await res.json();
-      if (json.success) {
-        setIntelData(json.data);
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success) {
+          setIntelData(json.data);
+        }
       }
     } finally {
       setRunning(false);
