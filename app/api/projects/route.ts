@@ -27,9 +27,15 @@ export async function GET() {
       orderBy: { updatedAt: "desc" },
     });
 
+    const serialized = JSON.parse(
+      JSON.stringify(projects, (key, value) =>
+        typeof value === "bigint" ? value.toString() : value
+      )
+    );
+
     return NextResponse.json({
       success: true,
-      data: projects,
+      data: serialized,
     });
   } catch (err: unknown) {
     const error = err as Error;

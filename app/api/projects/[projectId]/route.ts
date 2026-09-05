@@ -48,14 +48,22 @@ export async function GET(
     const survivalResult = calculateDeterministicSurvivalScore(metrics);
     const activeRisks = evaluateDeterministicRisks(metrics);
 
+    const payload = {
+      project,
+      metrics,
+      survivalResult,
+      activeRisks,
+    };
+
+    const serialized = JSON.parse(
+      JSON.stringify(payload, (key, value) =>
+        typeof value === "bigint" ? value.toString() : value
+      )
+    );
+
     return NextResponse.json({
       success: true,
-      data: {
-        project,
-        metrics,
-        survivalResult,
-        activeRisks,
-      },
+      data: serialized,
     });
   } catch (err: unknown) {
     const error = err as Error;

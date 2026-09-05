@@ -87,7 +87,7 @@ export function MarketingFooter() {
         </div>
 
         <div className="pt-8 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
-          <p>© {new Date().getFullYear()} Entropia. All rights reserved.</p>
+          <p suppressHydrationWarning>© {new Date().getFullYear()} Entropia. All rights reserved.</p>
           <p className="font-mono">Engine: Deterministic v1.4.2 • Storage: Filecoin Protocol</p>
         </div>
       </div>
