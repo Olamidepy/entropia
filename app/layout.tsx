@@ -6,9 +6,12 @@ export const metadata: Metadata = {
   description:
     "Autonomous survival intelligence platform monitoring digital projects, financial runways, storage deals, and risk signals with deterministic scoring and Filecoin preservation.",
   icons: {
-    icon: "/icon.svg",
-    shortcut: "/icon.svg",
-    apple: "/icon.svg",
+    icon: [
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
 };
 
