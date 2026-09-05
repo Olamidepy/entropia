@@ -39,7 +39,7 @@ export function DashboardSidebar() {
       {/* Brand Logo */}
       <div className="h-20 flex items-center px-6 border-b border-slate-100">
         <Link href="/" className="flex items-center gap-2">
-          <div className="relative h-8 w-36">
+          <div className="relative h-[30px] w-[160px]">
             <Image
               src="/images/entropia-logo.png"
               alt="Entropia"
