@@ -71,25 +71,22 @@ export function MarketingHero() {
                 alt="Entropia 3D Survival Intelligence Architecture"
                 fill
                 priority
-                className="object-contain object-center drop-shadow-xl"
+                className="object-contain object-center"
               />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Desktop 3D Visual: Exactly matches the reference design composition and scale */}
+      {/* Desktop 3D Visual: Clean rendering without shadows on white background */}
       <div className="hidden lg:flex absolute right-0 top-0 bottom-0 w-[50vw] max-w-[760px] xl:max-w-[840px] h-full pointer-events-none z-0 items-center justify-end overflow-hidden">
-        {/* Subtle ambient glow behind 3D asset */}
-        <div className="absolute top-1/2 right-10 -translate-y-1/2 w-[420px] h-[420px] bg-gradient-to-tr from-orange-100/30 to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
-
         <div className="relative w-full h-full">
           <Image
             src="/images/entropia-3d.png"
             alt="Entropia 3D Survival Intelligence Architecture"
             fill
             priority
-            className="object-contain object-right drop-shadow-2xl select-none"
+            className="object-contain object-right select-none"
           />
         </div>
       </div>

@@ -11,9 +11,9 @@ export function MarketingNavigation() {
   return (
     <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md border-b border-slate-100/80">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex items-center justify-between h-20">
-        {/* Logo matching exact reference design scale */}
+        {/* Logo matching exact reference design scale, reduced by 2px */}
         <Link href="/" className="flex items-center transition-opacity hover:opacity-90 py-1">
-          <div className="relative h-8 sm:h-[34px] w-40 sm:w-[180px]">
+          <div className="relative h-[30px] sm:h-[32px] w-[145px] sm:w-[170px]">
             <Image
               src="/images/entropia-logo.png"
               alt="Entropia"
