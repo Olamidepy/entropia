@@ -48,7 +48,7 @@ export function SurvivalScoreCard({ survivalResult, projectName }: SurvivalScore
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
         <div>
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-400">
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs font-bold uppercase tracking-wider text-slate-400">
             <span>Deterministic Survival Index</span>
             <span>•</span>
             <span className="text-slate-600 font-semibold">{projectName}</span>
@@ -58,7 +58,7 @@ export function SurvivalScoreCard({ survivalResult, projectName }: SurvivalScore
           </h2>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold border border-emerald-200">
             <TrendingUp className="w-3.5 h-3.5" />
             <span>+2.4% this cycle</span>

@@ -25,31 +25,39 @@ export function MobileNavigation({ isOpen, onClose }: MobileNavigationProps) {
     <div className="fixed inset-0 z-50 lg:hidden flex">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm"
+        className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       />
 
       {/* Drawer */}
-      <div className="relative w-72 max-w-[80vw] bg-white h-full flex flex-col p-6 z-10 shadow-2xl">
-        <div className="flex items-center justify-between pb-6 border-b border-slate-100">
-          <Link href="/" onClick={onClose} className="relative h-8 w-32">
+      <div className="relative w-72 max-w-[82vw] bg-white h-full flex flex-col p-6 z-10 shadow-2xl animate-in slide-in-from-left duration-200">
+        <div className="flex items-center justify-between pb-5 border-b border-slate-100">
+          <Link href="/" onClick={onClose} className="relative h-7 w-28">
             <Image
               src="/images/entropia-logo.png"
               alt="Entropia"
               fill
               className="object-contain object-left"
+              priority
             />
           </Link>
           <button
             type="button"
             onClick={onClose}
-            className="p-1 rounded-lg text-slate-400 hover:text-slate-600"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+            aria-label="Close navigation"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <nav className="flex-1 py-6 space-y-1 overflow-y-auto">
+        {/* Section Header */}
+        <div className="pt-5 pb-2 px-2 text-[11px] font-extrabold uppercase tracking-wider text-slate-400">
+          Survival Control
+        </div>
+
+        {/* Navigation List */}
+        <nav className="flex-1 space-y-1.5 overflow-y-auto pr-1">
           {DASHBOARD_NAV_ITEMS.map((item) => {
             const Icon = item.icon;
             const active = isActive(item.href);
@@ -59,9 +67,9 @@ export function MobileNavigation({ isOpen, onClose }: MobileNavigationProps) {
                 key={item.name}
                 href={item.href}
                 onClick={onClose}
-                className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-colors ${
+                className={`flex items-center gap-3 px-3.5 py-3 rounded-xl text-sm font-semibold transition-all ${
                   active
-                    ? "text-[#FF6B00] bg-orange-50 font-bold"
+                    ? "text-[#FF6B00] bg-orange-50 font-bold border border-orange-100 shadow-2xs"
                     : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                 }`}
               >
@@ -72,9 +80,12 @@ export function MobileNavigation({ isOpen, onClose }: MobileNavigationProps) {
           })}
         </nav>
 
-        <div className="pt-4 border-t border-slate-100 flex items-center gap-2 text-xs font-semibold text-emerald-600">
-          <ShieldCheck className="w-4 h-4 text-emerald-500" />
-          <span>Engines Active</span>
+        {/* Bottom Status */}
+        <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-emerald-600">
+          <div className="flex items-center gap-2">
+            <ShieldCheck className="w-4 h-4 text-emerald-500" />
+            <span>Deterministic Engines Active</span>
+          </div>
         </div>
       </div>
     </div>
