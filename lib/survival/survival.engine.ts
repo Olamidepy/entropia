@@ -1,10 +1,23 @@
+/**
+ * @fileoverview Deterministic Survival Engine for Entropia.
+ * Computes multi-factor survival index, entropy decay rates, and categorical health states.
+ * All algorithms are mathematically deterministic and verifiable.
+ * @module lib/survival/survival.engine
+ */
+
 import { RawSurvivalMetrics, SurvivalFactor, SurvivalScoreResult, SurvivalStatus } from "./survival.types";
 import { SURVIVAL_THRESHOLDS, SURVIVAL_WEIGHTS } from "./survival.weights";
 
 /**
  * Calculates deterministic survival score from raw telemetry and signals.
+ * Evaluates Resource Health, Storage Health, Historical Stability, Risk Exposure,
+ * System Activity, and Preservation Readiness.
+ * 
  * Scores are strictly bounded [0, 100].
  * The LLM NEVER computes or alters this numerical score.
+ * 
+ * @param metrics Ingested raw telemetry signals
+ * @returns Deterministic survival assessment result with factor breakdown
  */
 export function calculateDeterministicSurvivalScore(metrics: RawSurvivalMetrics): SurvivalScoreResult {
   const explanation: string[] = [];
