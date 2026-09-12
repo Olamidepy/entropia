@@ -1,10 +1,17 @@
 # ENTROPIA - AI Survival Intelligence Platform
 
+[![CI](https://github.com/Olamidepy/entropia/actions/workflows/ci.yml/badge.svg)](https://github.com/Olamidepy/entropia/actions)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](https://www.typescriptlang.org/)
+
 > **"An AI Agent that Decides What to Remember to Survive."**
 
 Entropia is a production-quality autonomous survival intelligence platform designed to monitor digital projects, autonomous AI agent vaults, storage conditions, resource runway, and environmental risk signals.
 
 By marrying a **strict deterministic mathematical scoring engine** with an **autonomous qualitative AI reasoning agent**, Entropia monitors system health and automatically orchestrates decentralized preservation on the **Filecoin network** through transparent confirmation safety gates and immutable audit logging.
+
+[Architecture](docs/ARCHITECTURE.md) • [Survival Engine](docs/SURVIVAL_ENGINE.md) • [Risk Matrix](docs/RISK_MATRIX.md) • [Deployment](docs/DEPLOYMENT.md) • [API Guide](docs/API.md)
 
 ---
 
