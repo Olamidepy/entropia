@@ -1,11 +1,23 @@
+/**
+ * @fileoverview Central telemetry monitoring service for signal ingestion and retrieval.
+ * @module lib/monitoring/monitor.service
+ */
+
 import { prisma } from "../db/prisma";
 import { NormalizedSignal } from "./signal.types";
 import { normalizeSignalsToMetrics } from "./signal.normalizer";
 import { RawSurvivalMetrics } from "../survival/survival.types";
 
+/**
+ * Service managing persistence, retrieval, and synthesis of telemetry signals.
+ */
 export class MonitorService {
   /**
-   * Fetch the latest observed signals for a given project
+   * Fetch the latest observed signals for a given project.
+   * Falls back to a deterministic synthetic baseline if the database has not yet been seeded.
+   * 
+   * @param projectId Unique project identifier
+   * @returns Array of most recent normalized signals
    */
   async getLatestSignals(projectId: string): Promise<NormalizedSignal[]> {
     try {
@@ -41,7 +53,10 @@ export class MonitorService {
   }
 
   /**
-   * Ingest new signals and record them in the database
+   * Ingest new signals and record them in the database.
+   * 
+   * @param projectId Target project identifier
+   * @param signals Batch of signal observations to persist
    */
   async ingestSignals(
     projectId: string,
@@ -63,7 +78,10 @@ export class MonitorService {
   }
 
   /**
-   * Get synthesized metrics ready for scoring and risk evaluation
+   * Get synthesized metrics ready for scoring and risk evaluation.
+   * 
+   * @param projectId Unique project identifier
+   * @returns Synthesized raw metrics ready for analytical engines
    */
   async getProjectMetrics(projectId: string): Promise<RawSurvivalMetrics> {
     const signals = await this.getLatestSignals(projectId);
@@ -71,4 +89,5 @@ export class MonitorService {
   }
 }
 
+/** Singleton instance of MonitorService for cross-module consumption */
 export const monitorService = new MonitorService();
